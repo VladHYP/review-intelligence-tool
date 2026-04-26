@@ -1,3 +1,11 @@
+# PyCharm
+.idea/
+
+# Project data (SQLite DB lives here)
+data/
+
+# Claude Code local session/tooling state
+.claude/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
