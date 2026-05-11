@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 
 from db import init_db
-from services import review_service, topic_service
+from services import evaluation_service, review_service, topic_service
 from services.topic_service import ValidationError
 
 load_dotenv()
@@ -56,6 +56,17 @@ def list_reviews(topic_id):
     except ValidationError as e:
         return jsonify({"error": str(e)}), 404
     return jsonify(reviews), 200
+
+
+@app.route("/topics/<int:topic_id>/evaluate", methods=["POST"])
+def evaluate_topic(topic_id):
+    try:
+        result = evaluation_service.evaluate_topic(topic_id)
+    except ValidationError as e:
+        message = str(e)
+        status = 404 if "not found" in message else 400
+        return jsonify({"error": message}), status
+    return jsonify(result), 200
 
 
 if __name__ == "__main__":
